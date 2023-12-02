@@ -1,12 +1,3 @@
--- table creations go HERE
--- no data
-
--- run sh create.sh command, anytime database changes
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS subjects CASCADE;
-DROP TABLE IF EXISTS responses CASCADE;
-DROP TABLE IF EXISTS topics CASCADE;
-
 CREATE TABLE users (
    user_id SERIAL PRIMARY KEY,
    username varchar(50) NOT NULL UNIQUE,
@@ -14,26 +5,23 @@ CREATE TABLE users (
    role varchar(50) NOT NULL
 );
 
-CREATE TABLE subjects (
-    subject_id SERIAL PRIMARY KEY,
-    subject_name varchar(50) UNIQUE
-);
-
-CREATE TABLE responses (
-    response_id SERIAL PRIMARY KEY,
-    response TEXT NOT NULL
-);
-
-CREATE TABLE topics (
-    topic_id SERIAL PRIMARY KEY,
-    topic_name varchar(255) NOT NULL,
-    subject_name varchar(50) REFERENCES subjects (subject_name),
-    response_id INTEGER REFERENCES responses (response_id)
-);
-
 --any data goes here
---inserts, updates, deletes
 
---create.
+CREATE TABLE mentors (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    user_id INT NOT NULL REFERENCES users(user_id),
+    chatgpt_id VARCHAR(255),
+    training_status VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
 
-BEGIN TRANSACTION;
+CREATE TABLE audio_files (
+    id SERIAL PRIMARY KEY,
+    file_path VARCHAR(255) NOT NULL,
+    transcription TEXT,
+    transcribed_at TIMESTAMP,
+    mentor_id INT NOT NULL REFERENCES mentors(id),
+    created_at TIMESTAMP NOT NULL
+);
