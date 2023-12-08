@@ -8,12 +8,10 @@ public class Mentor {
 
 
     //CONSTRUCTORS
-    public Character() {
-    }
 
-    public void Character(User creator, String name /*, additional fields */) {
-        this.creator = creator;
-        this.name = name;
+    public Mentor(int id, String name) {
+this.id = (long) id;
+this.name = name;
         // Assign other fields
     }
 
