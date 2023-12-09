@@ -1,8 +1,19 @@
 package com.techelevator.controller;
+
 import com.techelevator.dao.JdbcMentorDao;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile; // Added import for MultipartFile
+import java.io.File; // Added import for File
+import java.io.IOException; // Added import for IOException
+import java.nio.file.Files; // Added import for Files
+import java.nio.file.Path; // Added import for Path
+import java.nio.file.Paths; // Added import for Paths
+import java.nio.file.StandardCopyOption; // Added import for StandardCopyOption
 import java.util.List;
 
 @RestController
@@ -16,6 +27,42 @@ public class MentorController {
 
     @GetMapping("/mentors")
     public List<String> getMentorNames() {
-            return jdbcMentorDao.getMentorNames();
+        return jdbcMentorDao.getMentorNames();
+    }
+
+    @PostMapping("/newMentor") // needs updated to send information to db, just working on getting transcribing for now.
+    public ResponseEntity<?> transcribeUploadedAudio(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return new ResponseEntity<>("Please upload a valid audio file.", HttpStatus.BAD_REQUEST);
+        }
+        String transcription;
+        try {
+            transcription = transcribeAudioUsingGoogleSpeechToText(file);
+        } catch (IOException | InterruptedException e) {
+            return new ResponseEntity<>("Error processing the audio file.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return ResponseEntity.ok(transcription);
+    }
+
+    private String transcribeAudioUsingGoogleSpeechToText(MultipartFile file) throws IOException, InterruptedException {
+        ByteString audioData = ByteString.readFrom(file.getInputStream());
+        RecognitionAudio recognitionAudio = RecognitionAudio.newBuilder().setContent(audioData).build();
+
+        RecognitionConfig config = RecognitionConfig.newBuilder()
+                .setEncoding(RecognitionConfig.AudioEncoding.LINEAR16)
+                .setLanguageCode("en-US")
+                .setSampleRateHertz(16000)
+                .build();
+
+        try (SpeechClient speechClient = SpeechClient.create()) {
+            RecognizeResponse response = speechClient.recognize(config, recognitionAudio);
+            List<SpeechRecognitionResult> results = response.getResultsList();
+
+            return results.stream()
+                    .map(SpeechRecognitionResult::getAlternativesList)
+                    .flatMap(alternatives -> alternatives.stream())
+                    .map(SpeechRecognitionAlternative::getTranscript)
+                    .collect(Collectors.joining("\n"));
+        }
     }
 }
