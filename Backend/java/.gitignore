@@ -81,3 +81,6 @@ target
 .cache-main
 .scala_dependencies
 .worksheet
+
+# this is where I want to hide my keys.
+/src/main/resources/google-speech-credentials.json

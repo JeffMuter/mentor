@@ -15,6 +15,8 @@ this.name = name;
         // Assign other fields
     }
 
+    public Mentor() {}
+
 
     //GETTERS AND SETTERS
 
