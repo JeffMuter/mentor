@@ -6,6 +6,7 @@ import com.techelevator.dao.JdbcMentorDao;
 import org.springframework.cglib.core.Converter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import java.io.*;
 import java.nio.file.Files; // Added import for Files
 import java.nio.file.Path; // Added import for Path
 import java.nio.file.Paths; // Added import for Paths
+import java.security.Principal;
 import java.util.List;
 
 import com.google.protobuf.ByteString;
@@ -30,6 +32,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 
+@PreAuthorize("isAuthenticated()")
 @RestController
 public class MentorController {
 
@@ -39,8 +42,10 @@ public class MentorController {
         this.jdbcMentorDao = jdbcMentorDao;
     }
 
+    // TODO: finish
     @GetMapping("/mentors")
-    public List<String> getMentorNames() {
+    public List<String> getMentorNames(Principal principal) {
+        String userEmail = principal.getName();
         return jdbcMentorDao.getMentorNames();
     }
 
