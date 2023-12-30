@@ -70,7 +70,7 @@
 					name="confirmPassword"
 				/><br />
 			{/if}
-			<input type="submit" value={isLoginForm ? 'Login' : 'Register'} />
+			<input on:click={handleSubmit} type="submit" value={isLoginForm ? 'Login' : 'Register'} />
 		</form>
 		<button on:click={toggleForm}>{isLoginForm ? 'Switch to Register' : 'Switch to Login'}</button>
 	</div>
