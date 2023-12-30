@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"microsoft-cognitiveservices-speech-sdk": "^1.31.0"
+		"microsoft-cognitiveservices-speech-sdk": "^1.31.0",
+		"svelte-routing": "^2.11.0"
 	}
 }
