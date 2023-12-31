@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { userStore } from '$lib/userStore';
 
 	let username: string = '';
 	let password: string = '';
@@ -28,6 +29,13 @@
 			});
 
 			if (response.ok) {
+				try {
+					const data = await response.json();
+					console.log(data);
+					userStore.set({ storeUsername: data.user.username });
+				} catch (error) {
+					console.error(error);
+				}
 				goto('/');
 			}
 		} else {
