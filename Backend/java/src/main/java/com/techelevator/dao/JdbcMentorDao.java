@@ -14,9 +14,9 @@ public class JdbcMentorDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<String> getMentorNames() {
-        String sql = "SELECT name FROM mentors";
-        List<String> mentorNames = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getString("name"));
+    public List<String> getMentorNames(String email) {
+        String sql = "SELECT name FROM mentors WHERE email = ? ";
+        List<String> mentorNames = jdbcTemplate.query(sql, new Object[] {email}, (rs, rowNum) -> rs.getString("name"));
         return mentorNames;
     }
 }

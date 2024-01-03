@@ -7,10 +7,7 @@ import org.springframework.cglib.core.Converter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile; // Added import for MultipartFile
 
 import java.io.*;
@@ -43,14 +40,14 @@ public class MentorController {
     }
 
     // TODO: finish
-    @GetMapping("/mentors")
+    @GetMapping("/getMentorList")
     public List<String> getMentorNames(Principal principal) {
         String userEmail = principal.getName();
-        return jdbcMentorDao.getMentorNames();
+        return jdbcMentorDao.getMentorNames(userEmail);
     }
 
-    @PostMapping("/process")
-    public void processAudio(@RequestParam("file") MultipartFile mp3File) {
+    @PostMapping("/addMentor/{name}")
+    public void addMentor(Principal principal, @PathVariable String name, @RequestParam("file") MultipartFile mp3File) {
 
     }
 }
