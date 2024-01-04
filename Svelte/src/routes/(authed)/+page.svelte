@@ -15,7 +15,7 @@
 
 	const getMentorList = async (): Promise<void> => {
 		try {
-			const response = await fetch('http://localhost:9000/mentorList', {
+			const response = await fetch('http://localhost:9000/getMentorNames', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json'

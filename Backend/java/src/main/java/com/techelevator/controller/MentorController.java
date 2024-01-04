@@ -42,12 +42,14 @@ public class MentorController {
     // TODO: finish
     @GetMapping("/getMentorList")
     public List<String> getMentorNames(Principal principal) {
-        String userEmail = principal.getName();
-        return jdbcMentorDao.getMentorNames(userEmail);
+        String username = principal.getName();
+        return jdbcMentorDao.getMentorNames(username);
     }
 
     @PostMapping("/addMentor/{name}")
-    public void addMentor(Principal principal, @PathVariable String name, @RequestParam("file") MultipartFile mp3File) {
-
+    public ResponseEntity<String> addMentor(Principal principal, @PathVariable String name, @RequestParam("file") MultipartFile mp3File) {
+        String username = principal.getName();
+        String mentorName = name;
+        return jdbcMentorDao.addMentor(username, mentorName);
     }
 }
