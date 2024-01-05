@@ -76,6 +76,11 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>Your-Spring-Version</version>
+        </dependency>
 <!--some new stuff for transcribing files-->
         <dependency>
             <groupId>com.google.cloud</groupId>

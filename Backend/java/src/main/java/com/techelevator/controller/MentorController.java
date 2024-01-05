@@ -40,7 +40,7 @@ public class MentorController {
     }
 
     // TODO: finish
-    @GetMapping("/getMentorList")
+    @GetMapping("/getMentorNames")
     public List<String> getMentorNames(Principal principal) {
         String username = principal.getName();
         return jdbcMentorDao.getMentorNames(username);
